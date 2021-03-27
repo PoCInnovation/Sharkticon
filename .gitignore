@@ -1,3 +1,6 @@
+# MNIST Unzip
+MNIST/MNIST/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
