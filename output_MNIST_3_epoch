@@ -1,0 +1,30 @@
+Sequential(
+  (0): Linear(in_features=784, out_features=128, bias=True)
+  (1): ReLU()
+  (2): Linear(in_features=128, out_features=64, bias=True)
+  (3): ReLU()
+  (4): Linear(in_features=64, out_features=10, bias=True)
+  (5): LogSoftmax(dim=1)
+)
+Before backward pass: 
+ None
+After backward pass: 
+ tensor([[ 0.0000e+00,  0.0000e+00,  0.0000e+00,  ...,  0.0000e+00,
+          0.0000e+00,  0.0000e+00],
+        [-9.2906e-05, -9.2906e-05, -9.2906e-05,  ..., -9.2906e-05,
+         -9.2906e-05, -9.2906e-05],
+        [-1.6709e-05, -1.6709e-05, -1.6709e-05,  ..., -1.6710e-05,
+         -1.6710e-05, -1.6710e-05],
+        ...,
+        [-2.3745e-04, -2.3745e-04, -2.3745e-04,  ..., -2.3745e-04,
+         -2.3745e-04, -2.3745e-04],
+        [-7.0273e-04, -7.0273e-04, -7.0273e-04,  ..., -7.0273e-04,
+         -7.0273e-04, -7.0273e-04],
+        [ 1.0841e-03,  1.0841e-03,  1.0841e-03,  ...,  1.0841e-03,
+          1.0841e-03,  1.0841e-03]])
+Epoch 0 - Training loss: 0.67282800607558
+Epoch 1 - Training loss: 0.2809282092572148
+Epoch 2 - Training loss: 0.21351415387142314
+
+Training Time (in minutes) = 0.5901310523351033
+Predicted Digit = 7
