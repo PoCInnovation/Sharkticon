@@ -21,6 +21,13 @@ portsrc = readColCSV("./dataset/01-12/UDPLag.csv", ",", 3)
 ipdest = readColCSV("./dataset/01-12/UDPLag.csv", ",", 4)
 portdest =readColCSV("./dataset/01-12/UDPLag.csv", ",", 5)
 
+word = {}
+
+for i in range(len(ipsrc)):
+    ipsrc
+
+
+
 def writeCSV(fichier, sep, ipsrc, portsrc, ipdest, portdest):
     file = open(fichier, "w")
     writer = csv.writer(file, delimiter=sep)
