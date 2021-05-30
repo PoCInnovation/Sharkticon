@@ -2,8 +2,9 @@
 #    Tokenization     #
 #######################
 
-
+from tokenizers.pre_tokenizers import Whitespace
 from tokenizers import BertWordPieceTokenizer
+from tokenizers.trainers import BpeTrainer
 #etape 1 : lire la dataset
 
 tokenizer = BertWordPieceTokenizer(
