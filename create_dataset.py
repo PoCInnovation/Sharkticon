@@ -35,4 +35,4 @@ def writeCSV(fichier, sep, ipsrc, portsrc, ipdest, portdest):
         writer.writerow((ipsrc[i], portsrc[i], ipdest[i], portdest[i]))
     file.close()
 
-writeCSV("light_dataset.csv", ";", ipsrc, portsrc, ipdest, portdest)
+writeCSV("Dataset_final.csv", ";", ipsrc, portsrc, ipdest, portdest)
