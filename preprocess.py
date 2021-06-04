@@ -14,14 +14,14 @@ tokenizer = BertWordPieceTokenizer(
   lowercase=True,
 )
 
-files = ['light_dataset.csv']
+files = ['Dataset_final.csv']
 
 tokenizer.train(
   files,
-  vocab_size=100,
+  vocab_size=30000,
   min_frequency=2,
   show_progress=True,
-  special_tokens=['[PAD]', '[UNK]', '[CLS]', '[SEP]', '[MASK]'],
+  special_tokens=['[START]', '[END]', '[PAD]', '[UNK]', '[CLS]', '[SEP]', '[MASK]'],
   limit_alphabet=1000,
   wordpieces_prefix="##"
 )

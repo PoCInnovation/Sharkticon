@@ -20,6 +20,7 @@ ipsrc = readColCSV("./dataset/01-12/UDPLag.csv", ",", 2)
 portsrc = readColCSV("./dataset/01-12/UDPLag.csv", ",", 3)
 ipdest = readColCSV("./dataset/01-12/UDPLag.csv", ",", 4)
 portdest =readColCSV("./dataset/01-12/UDPLag.csv", ",", 5)
+protocol =readColCSV("./dataset/01-12/UDPLag.csv", ",", 6)
 
 word = {}
 
@@ -32,7 +33,7 @@ def writeCSV(fichier, sep, ipsrc, portsrc, ipdest, portdest):
     file = open(fichier, "w")
     writer = csv.writer(file, delimiter=sep)
     for i in range(len(ipsrc)):
-        writer.writerow((ipsrc[i], portsrc[i], ipdest[i], portdest[i]))
+        writer.writerow((ipsrc[i], portsrc[i], ipdest[i], portdest[i], protocol[i]))
     file.close()
 
-writeCSV("Dataset_final.csv", ";", ipsrc, portsrc, ipdest, portdest)
+writeCSV("Dataset_final.csv", ",", ipsrc, portsrc, ipdest, portdest)
