@@ -6,12 +6,14 @@
 from tokenizers import BertWordPieceTokenizer
 #etape 1 : lire la dataset
 
+
 tokenizer = BertWordPieceTokenizer(
   clean_text=False,
   handle_chinese_chars=False,
   strip_accents=False,
   lowercase=True,
 )
+
 
 files = ['light_dataset.csv']
 
