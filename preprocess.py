@@ -7,6 +7,7 @@ from tokenizers import BertWordPieceTokenizer
 from tokenizers.trainers import BpeTrainer
 #etape 1 : lire la dataset
 
+
 tokenizer = BertWordPieceTokenizer(
   clean_text=False,
   handle_chinese_chars=False,
@@ -14,7 +15,12 @@ tokenizer = BertWordPieceTokenizer(
   lowercase=True,
 )
 
+<<<<<<< HEAD
 files = ['Dataset_final.csv']
+=======
+
+files = ['light_dataset.csv']
+>>>>>>> 60df4ad5eef7dc87504954078805ce17fa834838
 
 tokenizer.train(
   files,
