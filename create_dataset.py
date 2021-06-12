@@ -14,20 +14,16 @@ def readColCSV(fichier, sep, n):
     file.close()
     return col
 
-
-
 ipsrc = readColCSV("./dataset/01-12/UDPLag.csv", ",", 2)
 portsrc = readColCSV("./dataset/01-12/UDPLag.csv", ",", 3)
 ipdest = readColCSV("./dataset/01-12/UDPLag.csv", ",", 4)
-portdest =readColCSV("./dataset/01-12/UDPLag.csv", ",", 5)
-protocol =readColCSV("./dataset/01-12/UDPLag.csv", ",", 6)
+portdest = readColCSV("./dataset/01-12/UDPLag.csv", ",", 5)
+protocol = readColCSV("./dataset/01-12/UDPLag.csv", ",", 6)
 
 word = {}
 
 for i in range(len(ipsrc)):
     ipsrc
-
-
 
 def writeCSV(fichier, sep, ipsrc, portsrc, ipdest, portdest):
     file = open(fichier, "w")
