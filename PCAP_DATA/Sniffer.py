@@ -37,7 +37,7 @@ class Sharktikon():
                    "SPY": 0}
 
         self.time = time.time()
-        self.fieldnames = ['deltatime', 'protocol', 'ip_src', 'srcport', 'ip_dst', 'dstport', 'length']
+        self.fieldnames = ['index', 'method', 'url', 'protocol', 'userAgent', 'pragma', 'cacheControl', 'accept', 'acceptEncoding', 'acceptCharset', 'acceptLanguage', 'host', 'connection', 'contentLength', 'contentType', 'cookie', 'payload', 'label']
         os.makedirs(self.Path['PATH_SAVE'], exist_ok=True)
         with open(f"{self.Path['PATH_SAVE']}capture.csv", 'a') as file_data:
             writer = csv.DictWriter(file_data, self.fieldnames)
@@ -56,27 +56,32 @@ class Sharktikon():
 
     def write_capture(self, packet):
         localtime = time.time()
-        #TODO: deltatime
         try:
+            print(packet)
             with open(f"{self.Path['PATH_SAVE']}capture.csv", 'a') as file_data:
                 deltatime = time.time() - self.time
                 self.time = time.time()
                 writer = csv.DictWriter(file_data, self.fieldnames)
-                protocol = packet.transport_layer   # protocol type
-                ip_src = packet.ip.src            # source address
-                srcport = packet[protocol].srcport   # source port
-                ip_dst = packet.ip.dst            # destination address
-                dstport = packet[protocol].dstport   # destination port
-                length = packet[protocol].length
                 writer.writerow({
-                                'deltatime': deltatime,
-                                'protocol': protocol,
-                                'ip_src': ip_src,
-                                'srcport': srcport,
-                                'ip_dst': ip_dst,
-                                'dstport': dstport,
-                                'length': length
-                                })
+                    'index': deltatime,
+                    'method': packet.http.request_method,
+                    'url': packet.http.request_full_uri,
+                    'protocol': packet.http.request.version,
+                    'userAgent': packet.http.user_agent,
+                    'pragma': '0',
+                    'cacheControl': '0',
+                    'accept': packet.http.accept,
+                    'acceptEncoding': packet.http.accept_encoding,
+                    'acceptCharset': packet.http.accept_charset,
+                    'acceptLanguage': packet.http.accept_language,
+                    'host': packet.http.host,
+                    'connection': packet.http.connection,
+                    'contentLength': packet.http.content_length,
+                    'contentType': packet.http.content_type,
+                    'cookie': packet.http.cookie,
+                    'payload': packet.http.request_uri,
+                    'label': 'anom',
+                })
         except AttributeError:
             pass
 
@@ -85,10 +90,10 @@ class Sharktikon():
             if not self.Status['PROCESS']:
                 print(f"Capturing for {self.IA['TIME']} seconds")
                 try:
-                    capture = pyshark.LiveCapture(interface='wlan0')
+                    capture = pyshark.LiveCapture(interface='wlan0', display_filter='http')
+                    print(len(capture))
                     capture.apply_on_packets(self.write_capture, timeout=5)
                     capture.sniff(timeout=3)
-                    print(capture)
                     time.sleep(self.IA['TIME'])
                 except Exception as e:
                     print(e)

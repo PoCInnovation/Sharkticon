@@ -3,14 +3,14 @@ import time
 import tensorflow as tf
 
 from Preprocess import tokenizers, train_batches
-from Optimization import optimizer, loss_function, train_accuracy, train_loss, accuracy_function
+from Optimization import optimizer, loss_function, train_accuracy, train_loss, accuracy_function, d_model
 from transformerModel import Transformer, create_padding_mask, create_look_ahead_mask
 
 BUFFER_SIZE = 1000
 BATCH_SIZE = 64
 EPOCHS = 12
 num_layers = 4
-d_model = 128
+d_model = d_model
 dff = 512
 num_heads = 8
 dropout_rate = 0.1
@@ -100,6 +100,7 @@ def trainModel():
         # inp -> portuguese, tar -> english
         for (batch, (inp, tar)) in enumerate(train_batches):
             train_step(inp, tar)
+            exit(0)
 
             if batch % 50 == 0:
                 print(

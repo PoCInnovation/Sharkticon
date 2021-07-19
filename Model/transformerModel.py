@@ -67,6 +67,11 @@ def scaled_dot_product_attention(q, k, v, mask):
     return output, attention_weights
 
 
+def create_look_ahead_mask(size):
+    mask = 1 - tf.linalg.band_part(tf.ones((size, size)), -1, 0)
+    return mask  # (seq_len, seq_len)
+
+
 def point_wise_feed_forward_network(d_model, dff):
     return tf.keras.Sequential([
         # (batch_size, seq_len, dff)
@@ -298,5 +303,3 @@ class Transformer(tf.keras.Model):
         final_output = self.final_layer(dec_output)
 
         return final_output, attention_weights
-
-

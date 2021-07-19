@@ -6,7 +6,7 @@ import tensorflow_text as text
 BUFFER_SIZE = 1000
 BATCH_SIZE = 64
 reserved_tokens = ["[PAD]", "[UNK]", "[START]", "[END]", "[SEP]"]
-vocab_path = "./my-tokenizer.json"
+vocab_path = "./Vocab/my-tokenizer.json"
 
 
 def create_dataset(path_to_csv, cols=[]):
@@ -14,15 +14,9 @@ def create_dataset(path_to_csv, cols=[]):
     return dataset
 
 
-dataset = create_dataset('Dataset_IDS.csv', [tf.string, tf.string])
-
-# data, data_pred = dataset['packet'], dataset['target'] #we need to make a separation like this
-
-START = tf.argmax(tf.constant(reserved_tokens) == "[START]")
-END = tf.argmax(tf.constant(reserved_tokens) == "[END]")
-
-
 def add_start_end(ragged):
+    START = tf.argmax(tf.constant(reserved_tokens) == "[START]")
+    END = tf.argmax(tf.constant(reserved_tokens) == "[END]")
     count = ragged.bounding_shape()[0]
     starts = tf.fill([count, 1], START)
     ends = tf.fill([count, 1], END)
@@ -101,7 +95,12 @@ class PacketTokenizer(tf.Module):
     def get_reserved_tokens(self):
         return tf.constant(self._reserved_tokens)
 
-tokenizers = PacketTokenizer(reserved_tokens, vocab_path)
+try:
+    tokenizers = PacketTokenizer(reserved_tokens, vocab_path)
+    dataset = create_dataset('./Datasets_created/Dataset_TOTO.csv', [tf.string, tf.string])
+except Exception as e:
+    print("Error : ", e)
+    exit(0)
 
 
 def tokenize_pairs(packet, next_packet):
