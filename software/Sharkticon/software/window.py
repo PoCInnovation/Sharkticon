@@ -61,18 +61,19 @@ class window:
         return
 
     def animate(self, i):
-        graph_data = open(self.__filepath, 'r').read()
-        lines = graph_data.split('\n')
-        xs = []
-        ys = []
-        i = 1
-        for line in lines:
-            if len(line) > 0:
-                xs.append(float(i))
-                ys.append(float(line))
-                i += 1
-        self.__ax1.clear()
-        self.__ax1.plot(xs, ys)
+        with open(self.__filepath, 'r') as file:
+            graph_data = file.read()
+            lines = graph_data.split('\n')
+            xs = []
+            ys = []
+            i = 1
+            for line in lines:
+                if len(line) > 0:
+                    xs.append(float(i))
+                    ys.append(float(line))
+                    i += 1
+            self.__ax1.clear()
+            self.__ax1.plot(xs, ys)
 
     def action(self, event) -> None:
         self.__frequency_value = self.__frequency_choice.get()
