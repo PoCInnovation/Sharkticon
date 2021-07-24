@@ -19,11 +19,11 @@ def writeCSV(fichier, sep, cols, len_max):
     writer.writerow(("Packet", "Target"))
     packetN = ""
     nextPacket = ""
-    for i in range(len_max - 1):
+    for i in range(1, len_max - 1):
         for x in range(len(cols)):
             packetN += cols[x][i] + "[SEP]"
-        for x in range(len(cols) - 1):
-            nextPacket += cols[x + 1][i] + "[SEP]"
+        for x in range(len(cols)):
+            nextPacket += cols[x][i + 1] + "[SEP]"
         writer.writerow((packetN, nextPacket))
         packetN = ""
         nextPacket = ""
@@ -44,8 +44,15 @@ if __name__ == "__main__":
     cols = ["index", "method", "url", "protocol", "userAgent", "pragma", "cacheControl", "accept", "acceptEncoding",
             "acceptCharset", "acceptLanguage", "host", "connection", "contentLength", "contentType", "cookie", "payload", "label"]
     cols_content = []
-    for i in range(1, len(cols)):
-        cols_content.append(readColCSV(args.path, ",", i))
+    cols_content.append(readColCSV(args.path, ",", 1))
+    cols_content.append(readColCSV(args.path, ",", 2))
+    cols_content.append(readColCSV(args.path, ",", 4))
+    cols_content.append(readColCSV(args.path, ",", 10))
+    cols_content.append(readColCSV(args.path, ",", 12))
+    cols_content.append(readColCSV(args.path, ",", 13))
+    cols_content.append(readColCSV(args.path, ",", 14))
+    cols_content.append(readColCSV(args.path, ",", 15))
+    cols_content.append(readColCSV(args.path, ",", 16))
     print("Reference dataset loaded...")
     writeCSV("Dataset_" + args.name + ".csv", ",", cols_content, args.len_max)
     print("Dataset created...")
