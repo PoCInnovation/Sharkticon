@@ -1,0 +1,5 @@
+tensorflow-text==2.5.0
+tensorflow
+pathlib
+argparse
+tkinter

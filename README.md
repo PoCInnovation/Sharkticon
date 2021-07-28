@@ -49,9 +49,7 @@ Here is the list of supported protocols :
 ## Quick Start
 
 ```
-Sharkticon
-or
-Sharkticon --cli
+python3 Sharkticon
 ```
 
 If you use the CLI, you will have less information \
