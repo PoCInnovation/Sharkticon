@@ -168,7 +168,6 @@ round_trip = tokenizers.detokenize(encoded)
 for line in round_trip.numpy():
     print(line.decode('utf-8'))
 
-exit(0)
 
 """The lower level `lookup` method converts from token-IDs to token text:"""
 
@@ -978,28 +977,28 @@ def train_step(inp, tar):
 
 """Portuguese is used as the input language and English is the target language."""
 
-# for epoch in range(EPOCHS):
-#     start = time.time()
+for epoch in range(EPOCHS):
+    start = time.time()
 
-#     train_loss.reset_states()
-#     train_accuracy.reset_states()
+    train_loss.reset_states()
+    train_accuracy.reset_states()
 
-#     # inp -> portuguese, tar -> english
-#     for (batch, (inp, tar)) in enumerate(train_batches):
-#         train_step(inp, tar)
+    # inp -> portuguese, tar -> english
+    for (batch, (inp, tar)) in enumerate(train_batches):
+        train_step(inp, tar)
 
-#         if batch % 50 == 0:
-#             print(
-#                 f'Epoch {epoch + 1} Batch {batch} Loss {train_loss.result():.4f} Accuracy {train_accuracy.result():.4f}')
+        if batch % 50 == 0:
+            print(
+                f'Epoch {epoch + 1} Batch {batch} Loss {train_loss.result():.4f} Accuracy {train_accuracy.result():.4f}')
 
-#     if (epoch + 1) % 5 == 0:
-#         ckpt_save_path = ckpt_manager.save()
-#         print(f'Saving checkpoint for epoch {epoch+1} at {ckpt_save_path}')
+    if (epoch + 1) % 5 == 0:
+        ckpt_save_path = ckpt_manager.save()
+        print(f'Saving checkpoint for epoch {epoch+1} at {ckpt_save_path}')
 
-#     print(
-#         f'Epoch {epoch + 1} Loss {train_loss.result():.4f} Accuracy {train_accuracy.result():.4f}')
+    print(
+        f'Epoch {epoch + 1} Loss {train_loss.result():.4f} Accuracy {train_accuracy.result():.4f}')
 
-#     print(f'Time taken for 1 epoch: {time.time() - start:.2f} secs\n')
+    print(f'Time taken for 1 epoch: {time.time() - start:.2f} secs\n')
 
 """## Evaluate"""
 
