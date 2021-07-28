@@ -15,12 +15,7 @@ tokenizer = BertWordPieceTokenizer(
   lowercase=True,
 )
 
-<<<<<<< HEAD
 files = ['Dataset_final.csv']
-=======
-
-files = ['light_dataset.csv']
->>>>>>> 60df4ad5eef7dc87504954078805ce17fa834838
 
 tokenizer.train(
   files,
