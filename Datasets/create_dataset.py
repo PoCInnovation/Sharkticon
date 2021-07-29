@@ -41,14 +41,29 @@ if __name__ == "__main__":
                         help='New name of the dataset created')
     args = parser.parse_args()
     print("Begin creation...")
-    cols = ["index", "method", "url", "protocol", "userAgent", "pragma", "cacheControl", "accept", "acceptEncoding",
-            "acceptCharset", "acceptLanguage", "host", "connection", "contentLength", "contentType", "cookie", "payload", "label"]
+    cols = ["index",
+            "method", #
+            "url", #
+            "protocol",
+            "userAgent", #
+            "pragma",
+            "cacheControl",
+            "accept",
+            "acceptEncoding",
+            "acceptCharset",
+            "acceptLanguage",
+            "host", #
+            "connection",
+            "contentLength", #
+            "contentType", #
+            "cookie", #
+            "payload", #
+            "label"]
     cols_content = []
     cols_content.append(readColCSV(args.path, ",", 1))
     cols_content.append(readColCSV(args.path, ",", 2))
     cols_content.append(readColCSV(args.path, ",", 4))
-    cols_content.append(readColCSV(args.path, ",", 10))
-    cols_content.append(readColCSV(args.path, ",", 12))
+    cols_content.append(readColCSV(args.path, ",", 11))
     cols_content.append(readColCSV(args.path, ",", 13))
     cols_content.append(readColCSV(args.path, ",", 14))
     cols_content.append(readColCSV(args.path, ",", 15))

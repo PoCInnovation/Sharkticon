@@ -57,32 +57,39 @@ class Sharktikon():
     def write_capture(self, packet):
         localtime = time.time()
         try:
-            print(packet)
             with open(f"{self.Path['PATH_SAVE']}capture.csv", 'a') as file_data:
                 deltatime = time.time() - self.time
                 self.time = time.time()
-                writer = csv.DictWriter(file_data, self.fieldnames)
-                writer.writerow({
-                    'index': deltatime,
-                    'method': packet.http.request_method,
-                    'url': packet.http.request_full_uri,
-                    'protocol': packet.http.request.version,
-                    'userAgent': packet.http.user_agent,
-                    'pragma': '0',
-                    'cacheControl': '0',
-                    'accept': packet.http.accept,
-                    'acceptEncoding': packet.http.accept_encoding,
-                    'acceptCharset': packet.http.accept_charset,
-                    'acceptLanguage': packet.http.accept_language,
-                    'host': packet.http.host,
-                    'connection': packet.http.connection,
-                    'contentLength': packet.http.content_length,
-                    'contentType': packet.http.content_type,
-                    'cookie': packet.http.cookie,
-                    'payload': packet.http.request_uri,
-                    'label': 'anom',
-                })
-        except AttributeError:
+                #writer = csv.DictWriter(file_data, self.fieldnames)
+                attributs = [packet.http.request_method,
+                             packet.http.request_full_uri,
+                             packet.http.request,
+                             packet.http.user_agent,
+                             packet.http.host,
+                             packet.http.content_length,
+                             packet.http.content_type,
+                             ]
+                # writer.writerow({
+                #     'index': deltatime,
+                #     'method': packet.http.request_method,
+                #     'url': packet.http.request_full_uri,
+                #     'protocol': packet.http.request,
+                #     'userAgent': packet.http.user_agent,
+                #     'cacheControl': '0',
+                #     'accept': packet.http.accept,
+                #     'acceptEncoding': packet.http.accept_encoding,
+                #     'acceptCharset': packet.http.accept_charset,
+                #     'acceptLanguage': packet.http.accept_language,
+                #     'host': packet.http.host,
+                #     'connection': packet.http.connection,
+                #     'contentLength': packet.http.content_length,
+                #     'contentType': packet.http.content_type,
+                #     'cookie': packet.http.cookie,
+                #     'payload': packet.http.request_uri,
+                # })
+        except AttributeError as e:
+            print(e)
+            print("Error")
             pass
 
     def Capturing(self):
