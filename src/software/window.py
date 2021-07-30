@@ -40,7 +40,7 @@ class window:
         self.__graph = animation.FuncAnimation(self.__fig, self.animate, interval=1000)
         self.__canvas = FigureCanvasTkAgg(self.__fig, master=self.__window)
         self.__button_quit = Button(self.__window, text="Quit", fg="red", font=self.__font, command=self.quit)
-        self.__log_label_good = Label(self.__window, text='No anomaly detected', fg="green", font=self.__font)
+        self.__log_label_good = Label(self.__window, text='Anomaly Detected', fg="red", font=self.__font)
         self.home()
 
     def home(self) -> None:
