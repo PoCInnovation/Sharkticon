@@ -1,0 +1,5 @@
+{
+    "fromAddr": "sender",
+    "passwordAddr": "password of sender",
+    "toAddr": "receiver"
+}
