@@ -68,6 +68,8 @@ class Sharktikon():
                              packet.http.host,
                              packet.http.content_length,
                              packet.http.content_type,
+                             packet.http.cookie,
+                             packet.http.request_uri
                              ]
                 # writer.writerow({
                 #     'index': deltatime,

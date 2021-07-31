@@ -1,4 +1,7 @@
 import tensorflow as tf
+import logging
+from Transformer.hyperparams import d_model
+import matplotlib.pyplot as plt
 
 
 class CustomSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
@@ -16,16 +19,9 @@ class CustomSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
 
         return tf.math.rsqrt(self.d_model) * tf.math.minimum(arg1, arg2)
 
-train_loss = tf.keras.metrics.Mean(name='train_loss')
-train_accuracy = tf.keras.metrics.Mean(name='train_accuracy')
-
 loss_object = tf.keras.losses.SparseCategoricalCrossentropy(
     from_logits=True, reduction='none')
 
-d_model = 128
-learning_rate = CustomSchedule(d_model)
-optimizer = tf.keras.optimizers.Adam(learning_rate, beta_1=0.9, beta_2=0.98,
-                                     epsilon=1e-9)
 
 def loss_function(real, pred):
     mask = tf.math.logical_not(tf.math.equal(real, 0))
@@ -46,3 +42,17 @@ def accuracy_function(real, pred):
     accuracies = tf.cast(accuracies, dtype=tf.float32)
     mask = tf.cast(mask, dtype=tf.float32)
     return tf.reduce_sum(accuracies) / tf.reduce_sum(mask)
+
+
+train_loss = tf.keras.metrics.Mean(name='train_loss')
+train_accuracy = tf.keras.metrics.Mean(name='train_accuracy')
+learning_rate = CustomSchedule(d_model)
+
+if __name__ == "__main__":
+    logging.getLogger('tensorflow').setLevel(logging.ERROR)  # suppress warnings
+    temp_learning_rate_schedule = CustomSchedule(d_model)
+
+    plt.plot(temp_learning_rate_schedule(tf.range(40000, dtype=tf.float32)))
+    plt.ylabel("Learning Rate")
+    plt.xlabel("Train Step")
+    plt.show()

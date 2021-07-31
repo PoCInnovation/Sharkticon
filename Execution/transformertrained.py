@@ -42,13 +42,13 @@ dataset = tf.data.experimental.CsvDataset(
     'Dataset_test.csv',
     [tf.string,  # Required field, use dtype or empty tensor
      tf.string  # Required field, use dtype or empty tensor
-    ])
+     ])
 
 for input_packet, target_packet in dataset.batch(1).take(1):
-    pass
+    print(1)
 
 #dataset = dataset.shuffle(1024).batch(64).prefetch(tf.data.experimental.AUTOTUNE)
-#TODO: séparer test et validation sets
+# TODO: séparer test et validation sets
 
 train_packet = dataset.map(lambda packet, target: target)
 train_target = dataset.map(lambda packet, target: packet)

@@ -1,22 +1,14 @@
 import tensorflow as tf
-import pathlib
 import re
 import tensorflow_text as text
+import pathlib
 
-BUFFER_SIZE = 1000
-BATCH_SIZE = 64
 reserved_tokens = ["[PAD]", "[UNK]", "[START]", "[END]", "[SEP]"]
-vocab_path = "./Vocab/my-tokenizer.json"
 
-
-def create_dataset(path_to_csv, cols=[]):
-    dataset = tf.data.experimental.CsvDataset(path_to_csv, cols)
-    return dataset
-
+START = tf.argmax(tf.constant(reserved_tokens) == "[START]")
+END = tf.argmax(tf.constant(reserved_tokens) == "[END]")
 
 def add_start_end(ragged):
-    START = tf.argmax(tf.constant(reserved_tokens) == "[START]")
-    END = tf.argmax(tf.constant(reserved_tokens) == "[END]")
     count = ragged.bounding_shape()[0]
     starts = tf.fill([count, 1], START)
     ends = tf.fill([count, 1], END)
@@ -52,6 +44,9 @@ class PacketTokenizer(tf.Module):
         self.tokenize.get_concrete_function(
             tf.TensorSpec(shape=[None], dtype=tf.string))
 
+        # Include `detokenize` and `lookup` signatures for:
+        #   * `Tensors` with shapes [tokens] and [batch, tokens]
+        #   * `RaggedTensors` with shape [batch, tokens]
         self.detokenize.get_concrete_function(
             tf.TensorSpec(shape=[None, None], dtype=tf.int64))
         self.detokenize.get_concrete_function(
@@ -62,6 +57,7 @@ class PacketTokenizer(tf.Module):
         self.lookup.get_concrete_function(
             tf.RaggedTensorSpec(shape=[None, None], dtype=tf.int64))
 
+        # These `get_*` methods take no arguments
         self.get_vocab_size.get_concrete_function()
         self.get_vocab_path.get_concrete_function()
         self.get_reserved_tokens.get_concrete_function()
@@ -95,50 +91,6 @@ class PacketTokenizer(tf.Module):
     def get_reserved_tokens(self):
         return tf.constant(self._reserved_tokens)
 
-try:
-    tokenizers = PacketTokenizer(reserved_tokens, vocab_path)
-    dataset = create_dataset('./Datasets_created/Dataset_TOTO.csv', [tf.string, tf.string])
-except Exception as e:
-    print("Error : ", e)
-    exit(0)
-
-
-def tokenize_pairs(packet, next_packet):
-    packet = tokenizers.tokenize(packet)
-    # Convert from ragged to dense, padding with zeros.
-    packet = packet.to_tensor()
-
-    next_packet = tokenizers.tokenize(next_packet)
-    # Convert from ragged to dense, padding with zeros.
-    next_packet = next_packet.to_tensor()
-    return packet, next_packet
-
-
-def make_batches(ds):
-    return (
-        ds
-        .cache()
-        .shuffle(BUFFER_SIZE)
-        .batch(BATCH_SIZE)
-        .map(tokenize_pairs, num_parallel_calls=tf.data.AUTOTUNE)
-        .prefetch(tf.data.AUTOTUNE))
-
-train_batches = make_batches(dataset)
-print(train_batches)
-
 if __name__ == "__main__":
-    for input_packet, target_packet in dataset.batch(3).take(1):
-        print(input_packet)
-        for pckt in input_packet.numpy():
-            print(pckt.decode('utf-8'))
-        print()
-        for packet in target_packet.numpy():
-            print(packet.decode('utf-8'))
-
-        for packet in input_packet.numpy():
-            print(packet.decode('utf-8'))
-
-    encoded = tokenizers.tokenize(input_packet)
-    print(encoded)
-    for row in encoded.to_list():
-        print(row)
+    vocab_path = "vocab.txt"
+    tokenizers = PacketTokenizer(reserved_tokens, vocab_path)
