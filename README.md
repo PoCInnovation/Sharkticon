@@ -1,6 +1,6 @@
-# Sharkticon
+# Sharkticon 🦈
 
-## Description
+## Description 🏭
 
 Sharkticon is an intrusion detection system.
 
@@ -39,14 +39,14 @@ Here is the list of supported protocols :
 | UDP| :x: |
 | TCP | :x: |
 
-## Installation
+## Installation 🛠️
 
 ```
  git clone https://github.com/PoCInnovation/Sharkticon.git
  cd Sharkticon
  pip3 install -r requirements.txt
 ```
-## Quick Start
+## Quick Start 🏁
 
 ```
 python3 Sharkticon
@@ -55,7 +55,7 @@ python3 Sharkticon
 If you use the CLI, you will have less information \
 but the essentials like alerts will be available.
 
-## Explanation
+## Explanation 🔍
 
 Sharkticon uses Wireshark to retrieve the network stream.
 is then processed by a python script to render it in the format of our model.
@@ -72,7 +72,8 @@ For our model we use the transformers architecture, being the state of the art i
 Our model makes a prediction of the next packet from the previous ones, we then use our anomaly detection algorithm to detect if the packet is malicious, if X packets are malicious in a Y time frame then we raise an alert.
 
 
-## Modules
+## Modules 📦
+
 Our software is divided into two main parts, training and analysis. Here is the list of features
 
 ### Current
@@ -85,7 +86,7 @@ Our software is divided into two main parts, training and analysis. Here is the 
 | Logs Manager | All your alerts will be grouped in a log folder with the date and time of the anomaly | 
 
 ------------
-## Maintainers
+## Maintainers 🧑‍🤝‍🧑
 
  - [Mikaël Vallenet](https://github.com/Mikatech)
  - [Evan Sabre](https://github.com/EvanSabre)
