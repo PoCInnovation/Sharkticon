@@ -5,4 +5,7 @@ def computeAnomalieScore(reelPacket, predictPacket):
     for i, j in zip(reelPacket, predictPacket):
         if i != j:
             anomalie += 1
+    anomalie = anomalie / len(reelPacket) * 100
     return anomalie
+
+computeAnomalieScore(['packet', 'GET', 'localhost'], ['paqet', 'GET', 'localo'])

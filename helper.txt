@@ -1,0 +1,20 @@
+
+   ----- -                -    -   -                 
+  / ----| |              | |  | | (-)                
+ | (--- | |--   -- - - --| | -| |- -  --- ---  - --  
+  \--- \| '- \ / -` | '--| |/ / --| |/ --/ - \| '- \ 
+  ----) | | | | (-| | |  |   <| |-| | (-| (-) | | | |
+ |-----/|-| |-|\--,-|-|  |-|\-\\--|-|\---\---/|-| |-|
+                                                     
+USAGE
+    python3 Sharkticon
+
+DESCRIPTION
+    Sharkticon is an intrusion detection system.
+    Its specificity is that it uses an anomaly detection system and machine learning,
+    notably the transformers architecture.
+    Indeed, currently the most known IDS (intrusion detection system)
+    use database of attack signatures to detect attacks.
+    Obviously a problem arises, if these systems face new attacks.
+    This is not the case with our IDS, which is able to detect attacks
+    that it has never seen thanks to anomaly detection.

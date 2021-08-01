@@ -8,6 +8,7 @@ from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib import style
+import time
 
 class window:
     """" handle the management of the window """
@@ -61,19 +62,18 @@ class window:
         return
 
     def animate(self, i):
-        with open(self.__filepath, 'r') as file:
-            graph_data = file.read()
-            lines = graph_data.split('\n')
-            xs = []
-            ys = []
-            i = 1
-            for line in lines:
-                if len(line) > 0:
-                    xs.append(float(i))
-                    ys.append(float(line))
-                    i += 1
-            self.__ax1.clear()
-            self.__ax1.plot(xs, ys)
+        graph_data = open(self.__filepath, 'r').read()
+        lines = graph_data.split('\n')
+        xs = []
+        ys = []
+        i = 1
+        for line in lines:
+            if len(line) > 0:
+                xs.append(float(i))
+                ys.append(float(line))
+                i += 1
+        self.__ax1.clear()
+        self.__ax1.plot(xs, ys)
 
     def action(self, event) -> None:
         self.__frequency_value = self.__frequency_choice.get()
