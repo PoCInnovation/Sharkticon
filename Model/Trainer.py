@@ -47,7 +47,9 @@ if __name__ == '__main__':
         sharkticon.ckpt.restore(ckpt_manager.latest_checkpoint)
         print('Latest checkpoint restored!!')
 
-    EPOCHS = 20
+    EPOCHS = 10
+    BUFFER_SIZE = 1000
+    BATCH_SIZE = 64
 
     for epoch in range(EPOCHS):
         start = time.time()
@@ -60,8 +62,7 @@ if __name__ == '__main__':
             train_step(inp, tar)
 
             if batch % 50 == 0:
-                print(
-                    f'Epoch {epoch + 1} Batch {batch} Loss {train_loss.result():.4f} Accuracy {train_accuracy.result():.4f}')
+                print(f'Epoch {epoch + 1} Batch {batch} Loss {train_loss.result():.4f} Accuracy {train_accuracy.result():.4f}')
 
         if (epoch + 1) % 5 == 0:
             ckpt_save_path = ckpt_manager.save()

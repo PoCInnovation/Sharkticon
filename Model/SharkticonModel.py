@@ -17,7 +17,7 @@ train_step_signature = [
 ]
 
 
-class SharkticonModel:
+class SharkticonModel():
     def __init__(self):
         self.dataset = tf.data.experimental.CsvDataset(PATH_DATASET,
                                                        [tf.string, tf.string])
