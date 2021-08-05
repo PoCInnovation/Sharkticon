@@ -12,7 +12,7 @@ import time
 import re
 
 
-class Sharktikon():
+class SharktikonCore():
     def __init__(self):
         self.Path = {"PATH_SAVE": "./data/",
                      "PATH_PREPROCESS_SCRIPT": "./Sharkticon/",
@@ -54,6 +54,10 @@ class Sharktikon():
         self.CapturingThread.join()
         self.ProcessingThread.join()
 
+    def stopSharkticon(self):
+        self.CapturingThread.join()
+        self.ProcessingThread.join()
+
     def write_capture(self, packet):
         localtime = time.time()
         try:
@@ -71,6 +75,9 @@ class Sharktikon():
                              packet.http.cookie,
                              packet.http.request_uri
                              ]
+                for i in attributs:
+                    file_data.write(i + "[SEP]")
+                file_data.write("\r\n")
                 # writer.writerow({
                 #     'index': deltatime,
                 #     'method': packet.http.request_method,
@@ -89,7 +96,7 @@ class Sharktikon():
                 #     'cookie': packet.http.cookie,
                 #     'payload': packet.http.request_uri,
                 # })
-        except AttributeError as e:
+        except Exception as e:
             print(e)
             print("Error")
             pass
@@ -113,6 +120,7 @@ class Sharktikon():
         while(1):
             if (self.Status['PROCESS']):
                 print("processing...")
+                #TODO: il faudra draw le graphique ici
                 time.sleep(1)
                 self.Status['PROCESS'] = False
 
