@@ -3,3 +3,4 @@ tensorflow
 pathlib
 argparse
 tkinter
+pyshark
