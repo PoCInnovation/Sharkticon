@@ -7,8 +7,6 @@ class StartingPage(tk.Frame):
 
     def __init__(self, parent, controller, font):
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Start Page", font=font)
-        label.pack(pady=10, padx=10)
 
         self.__start_button = tk.Button(self, text="Start", fg="green", font=font,
                                         command=lambda: controller.show_frame(GraphicPage))

@@ -1,45 +1,50 @@
 import tensorflow as tf
-from SharkticonModel import SharkticonModel
-from Transformer.masks import create_masks
-from Transformer.optimization import loss_function, accuracy_function
 import time
-from Transformer.optimization import train_loss, train_accuracy
 
-checkpoint_path = "./checkpoints/train"
+try:
+    from SharkticonModel import SharkticonModel
+    from Transformer.masks import create_masks
+    from Transformer.optimization import loss_function, accuracy_function
+    from Transformer.optimization import train_loss, train_accuracy
+except Exception as e:
+    from Model.SharkticonModel import SharkticonModel
+    from Model.Transformer.masks import create_masks
+    from Model.Transformer.optimization import loss_function, accuracy_function
+    from Model.Transformer.optimization import train_loss, train_accuracy
+
 
 train_step_signature = [
     tf.TensorSpec(shape=(None, None), dtype=tf.int64),
     tf.TensorSpec(shape=(None, None), dtype=tf.int64)]
 
-sharkticon = SharkticonModel()
 
+def train(checkpoint_path, dataset_path):
+    sharkticon = SharkticonModel(dataset_path)
 
-@tf.function(input_signature=train_step_signature)
-def train_step(inp, tar):
-    tar_inp = tar[:, :-1]
-    tar_real = tar[:, 1:]
+    @tf.function(input_signature=train_step_signature)
+    def train_step(inp, tar):
+        tar_inp = tar[:, :-1]
+        tar_real = tar[:, 1:]
 
-    enc_padding_mask, combined_mask, dec_padding_mask = create_masks(
-        inp, tar_inp)
+        enc_padding_mask, combined_mask, dec_padding_mask = create_masks(
+            inp, tar_inp)
 
-    with tf.GradientTape() as tape:
-        predictions, _ = sharkticon.transformer(inp, tar_inp,
-                                                True,
-                                                enc_padding_mask,
-                                                combined_mask,
-                                                dec_padding_mask)
-        loss = loss_function(tar_real, predictions)
+        with tf.GradientTape() as tape:
+            predictions, _ = sharkticon.transformer(inp, tar_inp,
+                                                    True,
+                                                    enc_padding_mask,
+                                                    combined_mask,
+                                                    dec_padding_mask)
+            loss = loss_function(tar_real, predictions)
 
-    gradients = tape.gradient(
-        loss, sharkticon.transformer.trainable_variables)
-    sharkticon.optimizer.apply_gradients(
-        zip(gradients, sharkticon.transformer.trainable_variables))
+        gradients = tape.gradient(
+            loss, sharkticon.transformer.trainable_variables)
+        sharkticon.optimizer.apply_gradients(
+            zip(gradients, sharkticon.transformer.trainable_variables))
 
-    train_loss(loss)
-    train_accuracy(accuracy_function(tar_real, predictions))
+        train_loss(loss)
+        train_accuracy(accuracy_function(tar_real, predictions))
 
-
-if __name__ == '__main__':
     ckpt_manager = tf.train.CheckpointManager(
         sharkticon.ckpt, checkpoint_path, max_to_keep=5)
     # if a checkpoint exists, restore the latest checkpoint.
@@ -62,7 +67,8 @@ if __name__ == '__main__':
             train_step(inp, tar)
 
             if batch % 50 == 0:
-                print(f'Epoch {epoch + 1} Batch {batch} Loss {train_loss.result():.4f} Accuracy {train_accuracy.result():.4f}')
+                print(
+                    f'Epoch {epoch + 1} Batch {batch} Loss {train_loss.result():.4f} Accuracy {train_accuracy.result():.4f}')
 
         if (epoch + 1) % 5 == 0:
             ckpt_save_path = ckpt_manager.save()
@@ -72,3 +78,7 @@ if __name__ == '__main__':
             f'Epoch {epoch + 1} Loss {train_loss.result():.4f} Accuracy {train_accuracy.result():.4f}')
 
         print(f'Time taken for 1 epoch: {time.time() - start:.2f} secs\n')
+
+
+# if __name__ == '__main__':
+    # train("./checkpoints/train")

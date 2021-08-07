@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 import tkinter.font as tkFont
+from tkinter import messagebox
 from PIL import ImageTk, Image
 from matplotlib.figure import Figure
 from src.software.Sniffer import SharktikonCore
@@ -20,6 +21,7 @@ class MainWindow(Tk):
     def __init__(self, ico_path: str, color: str):
         Tk.__init__(self)
         style.use('fivethirtyeight')
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.__ico_path = ico_path
         self.font = tkFont.Font(family="Arial", size=24, weight="bold")
         self.__title = 'Sharkticon'
@@ -43,6 +45,10 @@ class MainWindow(Tk):
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
+
+    def on_closing(self):
+        if messagebox.askokcancel("Quit", "Do you want to quit?"):
+            self.destroy()
 
     def start(self) -> None:
         self.mainloop()

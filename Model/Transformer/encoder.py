@@ -1,7 +1,13 @@
 import tensorflow as tf
-from Transformer.attention import MultiHeadAttention
-from Transformer.utils import point_wise_feed_forward_network
-from Transformer.positionnalEncoding import positional_encoding
+
+try:
+    from Transformer.attention import MultiHeadAttention
+    from Transformer.utils import point_wise_feed_forward_network
+    from Transformer.positionnalEncoding import positional_encoding
+except ModuleNotFoundError:
+    from Model.Transformer.attention import MultiHeadAttention
+    from Model.Transformer.utils import point_wise_feed_forward_network
+    from Model.Transformer.positionnalEncoding import positional_encoding
 
 
 class EncoderLayer(tf.keras.layers.Layer):

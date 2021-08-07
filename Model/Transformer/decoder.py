@@ -1,9 +1,14 @@
 import tensorflow as tf
-from Transformer.attention import MultiHeadAttention
-from Transformer.utils import point_wise_feed_forward_network
-from Transformer.positionnalEncoding import positional_encoding
-from Transformer.encoder import sample_encoder_layer_output, sample_encoder_output
-
+try:
+    from Transformer.attention import MultiHeadAttention
+    from Transformer.utils import point_wise_feed_forward_network
+    from Transformer.positionnalEncoding import positional_encoding
+    from Transformer.encoder import sample_encoder_layer_output, sample_encoder_output
+except ModuleNotFoundError:
+    from Model.Transformer.attention import MultiHeadAttention
+    from Model.Transformer.utils import point_wise_feed_forward_network
+    from Model.Transformer.positionnalEncoding import positional_encoding
+    from Model.Transformer.encoder import sample_encoder_layer_output, sample_encoder_output
 
 class DecoderLayer(tf.keras.layers.Layer):
     def __init__(self, d_model, num_heads, dff, rate=0.1):

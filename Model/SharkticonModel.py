@@ -1,15 +1,26 @@
 import tensorflow as tf
-from Tokenizer import PacketTokenizer
-from Transformer.transformer import Transformer
-from Transformer.hyperparams import num_heads, d_model, dropout_rate, dff, num_layers
-from Transformer.optimization import learning_rate, loss_function, train_loss, train_accuracy, accuracy_function
-from Transformer.masks import create_masks
+
+try:
+    from Tokenizer import PacketTokenizer
+    from Transformer.transformer import Transformer
+    from Transformer.hyperparams import num_heads, d_model, dropout_rate, dff, num_layers
+    from Transformer.optimization import learning_rate, loss_function, train_loss, train_accuracy, accuracy_function
+    from Transformer.masks import create_masks
+    PATH_VOCAB = "../data/vocab.txt"
+    PATH_DATASET = '../data/Dataset_test.csv'
+
+except Exception as e:
+    from Model.Tokenizer import PacketTokenizer
+    from Model.Transformer.transformer import Transformer
+    from Model.Transformer.hyperparams import num_heads, d_model, dropout_rate, dff, num_layers
+    from Model.Transformer.optimization import learning_rate, loss_function, train_loss, train_accuracy, accuracy_function
+    from Model.Transformer.masks import create_masks
+    PATH_VOCAB = "./data/vocab.txt"
+    PATH_DATASET = './data/Dataset_test.csv'
 # from Transformer.masks import
 
 BUFFER_SIZE = 20000
 BATCH_SIZE = 64
-PATH_VOCAB = "../data/vocab.txt"
-PATH_DATASET = '../data/Dataset_test.csv'
 
 train_step_signature = [
     tf.TensorSpec(shape=(None, None), dtype=tf.int64),
@@ -18,7 +29,7 @@ train_step_signature = [
 
 
 class SharkticonModel():
-    def __init__(self):
+    def __init__(self, dataset):
         self.dataset = tf.data.experimental.CsvDataset(PATH_DATASET,
                                                        [tf.string, tf.string])
         train_packet = self.dataset.map(lambda packet, target: target)

@@ -1,19 +1,33 @@
 # -*- coding: utf-8 -*-
-
-from SharkticonModel import SharkticonModel
-from Transformer.masks import create_masks
-
 import tensorflow as tf
 import tensorflow_text as text
 import matplotlib.pyplot as plt
 import numpy as np
 import logging
 
+try:
+    from SharkticonModel import SharkticonModel
+    from Transformer.masks import create_masks
+except ModuleNotFoundError:
+    from Model.SharkticonModel import SharkticonModel
+    from Model.Transformer.masks import create_masks
+
+
 checkpoint_path = "./checkpoints/train"
 
 logging.getLogger('tensorflow').setLevel(logging.ERROR)  # suppress warnings
 
-def evaluate(request, max_length=1000):
+
+def print_translation(request, tokens, ground_truth):
+    print(f'{"Input:":15s}: {request}')
+    print(f'{"Prediction":15s}: {tokens.numpy().decode("utf-8")}')
+    print(f'{"Ground truth":15s}: {ground_truth}')
+
+
+def predicate(checkpoint_path, dataset, request):
+    sharkticon = SharkticonModel(dataset)
+
+    def evaluate(request, max_length=1000):
         # inp request is portuguese, hence adding the start and end token
         request = tf.convert_to_tensor([request])
         request = sharkticon.tokenizer.tokenize(request).to_tensor()
@@ -49,56 +63,12 @@ def evaluate(request, max_length=1000):
 
         return request_affichage, tokens, attention_weights
 
-def print_translation(request, tokens, ground_truth):
-    print(f'{"Input:":15s}: {request}')
-    print(f'{"Prediction":15s}: {tokens.numpy().decode("utf-8")}')
-    print(f'{"Ground truth":15s}: {ground_truth}')
-
-def plot_attention_head(in_tokens, translated_tokens, attention):
-    # The plot is of the attention when a token was generated.
-    # The model didn't generate `<START>` in the output. Skip it.
-    translated_tokens = translated_tokens[1:]
-
-    ax = plt.gca()
-    ax.matshow(attention)
-    ax.set_xticks(range(len(in_tokens)))
-    ax.set_yticks(range(len(translated_tokens)))
-
-    labels = [label.decode('utf-8') for label in in_tokens.numpy()]
-    ax.set_xticklabels(
-        labels, rotation=90)
-
-    labels = [label.decode('utf-8') for label in translated_tokens.numpy()]
-    ax.set_yticklabels(labels)
-
-def plot_attention_weights(request, translated_tokens, attention_heads):
-        in_tokens = tf.convert_to_tensor([request])
-        in_tokens = sharkticon.tokenizer.tokenize(in_tokens).to_tensor()
-        in_tokens = sharkticon.tokenizer.lookup(in_tokens)[0]
-        in_tokens
-
-        fig = plt.figure(figsize=(16, 8))
-
-        for h, head in enumerate(attention_heads):
-            ax = fig.add_subplot(2, 4, h + 1)
-
-            plot_attention_head(in_tokens, translated_tokens, head)
-
-            ax.set_xlabel(f'Head {h+1}')
-
-        plt.tight_layout()
-        plt.show()
-
-if __name__ == "__main__":
-    sharkticon = SharkticonModel()
-
     ckpt_manager = tf.train.CheckpointManager(
         sharkticon.ckpt, checkpoint_path, max_to_keep=5)
     if ckpt_manager.latest_checkpoint:
         sharkticon.ckpt.restore(ckpt_manager.latest_checkpoint)
         print('Latest checkpoint restored!!')
 
-    request = "GET[SEP]http://localhost:8080/tienda1/publico/anadir.jsp[SEP]Mozilla/5.0 (compatible; Konqueror/3.5; Linux) KHTML/3.5.8 (like Gecko)[SEP]en[SEP]close[SEP]null[SEP]null[SEP]JSESSIONID=B92A8B48B9008CD29F622A994E0F650D[SEP]"
     next_request = ""
 
     request_prediction, translated_tokens, attention_weights = evaluate(request)
@@ -137,3 +107,39 @@ if __name__ == "__main__":
 
     # plot_attention_weights(request, translated_tokens,
     #                     attention_weights['decoder_layer4_block2'][0])
+
+
+# def plot_attention_head(in_tokens, translated_tokens, attention):
+#     # The plot is of the attention when a token was generated.
+#     # The model didn't generate `<START>` in the output. Skip it.
+#     translated_tokens = translated_tokens[1:]
+
+#     ax = plt.gca()
+#     ax.matshow(attention)
+#     ax.set_xticks(range(len(in_tokens)))
+#     ax.set_yticks(range(len(translated_tokens)))
+
+#     labels = [label.decode('utf-8') for label in in_tokens.numpy()]
+#     ax.set_xticklabels(
+#         labels, rotation=90)
+
+#     labels = [label.decode('utf-8') for label in translated_tokens.numpy()]
+#     ax.set_yticklabels(labels)
+
+# def plot_attention_weights(request, translated_tokens, attention_heads):
+        # in_tokens = tf.convert_to_tensor([request])
+        # in_tokens = sharkticon.tokenizer.tokenize(in_tokens).to_tensor()
+        # in_tokens = sharkticon.tokenizer.lookup(in_tokens)[0]
+        # in_tokens
+
+        # fig = plt.figure(figsize=(16, 8))
+
+        # for h, head in enumerate(attention_heads):
+        #     ax = fig.add_subplot(2, 4, h + 1)
+
+        #     plot_attention_head(in_tokens, translated_tokens, head)
+
+        #     ax.set_xlabel(f'Head {h+1}')
+
+        # plt.tight_layout()
+        # plt.show()

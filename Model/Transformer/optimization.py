@@ -1,7 +1,11 @@
 import tensorflow as tf
 import logging
-from Transformer.hyperparams import d_model
 import matplotlib.pyplot as plt
+
+try:
+    from Transformer.hyperparams import d_model
+except ModuleNotFoundError:
+    from Model.Transformer.hyperparams import d_model
 
 
 class CustomSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):

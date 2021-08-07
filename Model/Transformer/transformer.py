@@ -1,6 +1,10 @@
 import tensorflow as tf
-from Transformer.encoder import Encoder
-from Transformer.decoder import Decoder
+try:
+    from Transformer.encoder import Encoder
+    from Transformer.decoder import Decoder
+except ModuleNotFoundError:
+    from Model.Transformer.encoder import Encoder
+    from Model.Transformer.decoder import Decoder
 
 
 class Transformer(tf.keras.Model):
