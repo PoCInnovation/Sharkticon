@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 
 class StartingPage(tk.Frame):
 
-    def __init__(self, parent, controller, font):
+    def __init__(self, parent, controller, font, f):
         tk.Frame.__init__(self, parent)
 
         self.__start_button = tk.Button(self, text="Start", fg="green", font=font,

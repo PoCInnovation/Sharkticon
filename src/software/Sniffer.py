@@ -46,18 +46,13 @@ class SharktikonCore():
 
     def StartSharkticon(self):
         self.CapturingThread = Thread(target=self.Capturing)
-        self.ProcessingThread = Thread(target=self.Processing)
         self.CapturingThread.daemon = True
-        self.ProcessingThread.daemon = True
 
         self.CapturingThread.start()
-        self.ProcessingThread.start()
         self.CapturingThread.join()
-        self.ProcessingThread.join()
 
     def stopSharkticon(self):
         self.CapturingThread.join()
-        self.ProcessingThread.join()
 
     def write_capture(self, packet):
         localtime = time.time()
@@ -114,15 +109,6 @@ class SharktikonCore():
                     print(e)
                 self.Status['PROCESS'] = True
                 time.sleep(1)
-
-    def Processing(self):
-        while(1):
-            if (self.Status['PROCESS']):
-                print("processing...")
-                # TODO: il faudra draw le graphique ici
-                time.sleep(1)
-                self.Status['PROCESS'] = False
-
 
 if __name__ == "__main__":
     SharktikonCore().StartSharkticon()

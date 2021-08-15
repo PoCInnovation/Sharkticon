@@ -73,6 +73,7 @@ def predicate(checkpoint_path, dataset, request):
 
     request_prediction, translated_tokens, attention_weights = evaluate(request)
     print_translation(request, request_prediction, next_request)
+    return request_prediction
     #sharkticon.transformer.save("./saved_model")
 
 

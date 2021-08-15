@@ -14,7 +14,7 @@ import matplotlib.animation as animation
 from matplotlib import style
 import time
 
-sharkticonCore = SharktikonCore()
+#sharkticonCore = SharktikonCore()
 class MainWindow(Tk):
     """" handle the management of the MainWindow """
 
@@ -37,7 +37,7 @@ class MainWindow(Tk):
         self.frames = {}
 
         for F in (StartingPage, GraphicPage):
-            frame = F(container, self, self.font)
+            frame = F(container, self, self.font, f)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
         self.show_frame(StartingPage)
@@ -52,3 +52,24 @@ class MainWindow(Tk):
 
     def start(self) -> None:
         self.mainloop()
+
+f = plt.figure()
+ax1 = f.add_subplot(1, 1, 1)
+
+def animate(i):
+        graph_data = open('./data/samplefile.txt', 'r').read()
+        lines = graph_data.split('\n')
+        xs = []
+        ys = []
+        i = 1
+        for line in lines:
+            if len(line) > 0:
+                xs.append(float(i))
+                ys.append(float(line))
+                i += 1
+        ax1.clear()
+        ax1.plot(xs, ys)
+
+app = MainWindow('@./images/logo.xbm', 'blue')
+ani = animation.FuncAnimation(f, animate, interval=1000)
+app.start()

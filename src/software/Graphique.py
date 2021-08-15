@@ -1,7 +1,6 @@
 import tkinter as tk
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-
 from threading import Thread
 from time import sleep
 from tkinter import Button, Label, Tk
@@ -13,16 +12,17 @@ from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
 
 class GraphicPage(tk.Frame):
 
-    def __init__(self, parent, controller, font):
+    def __init__(self, parent, controller, font, f):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.label = Label(self, text="Stopped.")
         self.label.pack()
-        self.__filepath = './data/samplefile.txt'
-        self.__fig = plt.figure()
-        self.__ax1 = self.__fig.add_subplot(1, 1, 1)
-        self.__graph = animation.FuncAnimation(self.__fig, self.animate, interval=1000)
-        self.__canvas = FigureCanvasTkAgg(self.__fig, master=self)
+        #self.__filepath = './data/samplefile.txt'
+        #self.__fig = plt.figure()
+        #self.__ax1 = self.__fig.add_subplot(1, 1, 1)
+        #self.__graph = animation.FuncAnimation(self.__fig, self.animate, interval=1000)
+        self.__f = f
+        self.__canvas = FigureCanvasTkAgg(f, master=self)
         self.retrain_button = Button(self, text="Re-Train", fg="green", font=font, command=self.retrain)
         self.stop_button = Button(self, text="Stop", command=self.stop)
         self.__button_quit = Button(self, text="Quit", fg="red", font=font, command=self.quit)
@@ -39,20 +39,6 @@ class GraphicPage(tk.Frame):
         self.__log_label_good.place(relx=0.29, rely=0.85)
         self.label.place(relx=0.15, rely=0.95)
         return
-
-    def animate(self, i):
-        graph_data = open(self.__filepath, 'r').read()
-        lines = graph_data.split('\n')
-        xs = []
-        ys = []
-        i = 1
-        for line in lines:
-            if len(line) > 0:
-                xs.append(float(i))
-                ys.append(float(line))
-                i += 1
-        self.__ax1.clear()
-        self.__ax1.plot(xs, ys)
 
     def retrain(self):
         if self._thread is None:
@@ -86,6 +72,6 @@ class GraphicPage(tk.Frame):
         self.stop_button.configure(text="Re-Train", command=self.retrain)
 
     def quit(self) -> None:
-        plt.close(self.__fig)
+        plt.close(self.__f)
         self.stop()
         self.controller.destroy()
