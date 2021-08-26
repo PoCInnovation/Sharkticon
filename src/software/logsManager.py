@@ -30,12 +30,9 @@ def logsManager(self):
         s.starttls()
         try:
             s.login(self.__from_addr, self.__password_addr)
-        except:
+        except Exception:
             print("Error : your mail config isn't valid")
             return
         text = msg.as_string()
         s.sendmail(self.__from_addr, self.__to_addr, text)
         s.quit()
-
-
-        

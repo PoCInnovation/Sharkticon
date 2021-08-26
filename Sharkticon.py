@@ -12,4 +12,4 @@ if len(args) == 2 and args[1] == "-h":
     exit(0)
 
 from src.software.window import MainWindow
-from src.software.Sniffer
+# from src.software.Sniffer

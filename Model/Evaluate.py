@@ -23,6 +23,10 @@ def print_translation(request, tokens, ground_truth):
     print(f'{"Prediction":15s}: {tokens.numpy().decode("utf-8")}')
     print(f'{"Ground truth":15s}: {ground_truth}')
 
+def getLastLine(file_name):
+    with open(file_name, "r") as packets:
+        last_packet = packets.readlines()[-1]
+        return last_packet
 
 def predicate(checkpoint_path, dataset, request):
     sharkticon = SharkticonModel(dataset)
@@ -100,7 +104,6 @@ def predicate(checkpoint_path, dataset, request):
 
     # """The model does okay on unfamiliar words. Neither "triceratops" or "encyclopedia" are in the input dataset and the model almost learns to transliterate them, even without a shared vocabulary:"""
 
-    # request = "GET[SEP]http://localhost:8080/asf-logo-wide.gif~[SEP]HTTP/1.1[SEP]Mozilla/5.0 (compatible; Konqueror/3.5; Linux) KHTML/3.5.8 (like Gecko)[SEP]no-cache[SEP]no-cache[SEP]text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5[SEP]x-gzip, x-deflate, gzip, deflate[SEP]utf-8, utf-8;q=0.5, *;q=0.5[SEP]en[SEP]localhost:8080[SEP]close[SEP]null[SEP]null[SEP]JSESSIONID=51A7470173188BBB993947F2283059E4[SEP][SEP]anom[SEP]"
     # next_request = "http://localhost:8080/asf-logo-wide.gif~[SEP]HTTP/1.1[SEP]Mozilla/5.0 (compatible; Konqueror/3.5; Linux) KHTML/3.5.8 (like Gecko)[SEP]no-cache[SEP]no-cache[SEP]text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5[SEP]x-gzip, x-deflate, gzip, deflate[SEP]utf-8, utf-8;q=0.5, *;q=0.5[SEP]en[SEP]localhost:8080[SEP]close[SEP]null[SEP]null[SEP]JSESSIONID=51A7470173188BBB993947F2283059E4[SEP][SEP]anom[SEP]"
 
     # translated_text, translated_tokens, attention_weights = evaluate(request)
@@ -144,3 +147,8 @@ def predicate(checkpoint_path, dataset, request):
 
         # plt.tight_layout()
         # plt.show()
+
+# request = "GET[SEP]http://localhost:8080/asf-logo-wide.gif~[SEP]HTTP/1.1[SEP]Mozilla/5.0 (compatible; Konqueror/3.5; Linux) KHTML/3.5.8 (like Gecko)[SEP]no-cache[SEP]no-cache[SEP]text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5[SEP]x-gzip, x-deflate, gzip, deflate[SEP]utf-8, utf-8;q=0.5, *;q=0.5[SEP]en[SEP]localhost:8080[SEP]close[SEP]null[SEP]null[SEP]JSESSIONID=51A7470173188BBB993947F2283059E4[SEP][SEP]anom[SEP]"
+#request = "POST[SEP]http://r3.o.lencr.org/[SEP]1[SEP]Mozilla/5.0 (Windows NT 10.0; rv:78.0) Gecko/20100101 Firefox/78.0[SEP]r3.o.lencr.org[SEP]85[SEP]application/ocsp-request[SEP]/[SEP]"
+
+#predicate(checkpoint_path, "../Execution/Dataset_test.csv", request)

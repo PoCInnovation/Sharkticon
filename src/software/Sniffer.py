@@ -20,31 +20,19 @@ class SharktikonCore():
 
         self.Status = {"CAPTURE": True,
                        "PROCESS": False,
-                       "STOP": False,
-                       "NEW": False,
-                       "GO": False,
-                       "SAVING": False,
-                       "DDOS": True,
-                       "MITM": True}
+                       }
 
-        self.IA = {"MODEL": 0,
-                   "PACKETS": [],
-                   "NUMBER_BAD_PACKETS": 0,
-                   "NUMBER_PACKETS": 0,
-                   "PREDICTION": 0,
-                   "PACKETS_FLOW": 20,
-                   "TIME": 3,
-                   "SPY": 0}
+        self.IA = {"TIME": 3}
 
         self.time = time.time()
         self.fieldnames = ['index', 'method', 'url', 'protocol', 'userAgent', 'pragma', 'cacheControl', 'accept', 'acceptEncoding',
                            'acceptCharset', 'acceptLanguage', 'host', 'connection', 'contentLength', 'contentType', 'cookie', 'payload', 'label']
-        #os.makedirs(self.Path['PATH_SAVE'], exist_ok=True)
-        #with open(f"{self.Path['PATH_SAVE']}capture.csv", 'a') as file_data:
-        #    writer = csv.DictWriter(file_data, self.fieldnames)
-        #    writer.writeheader()
 
     def StartSharkticon(self):
+        # os.makedirs(self.Path['PATH_SAVE'], exist_ok=True)
+        # with open(f"{self.Path['PATH_SAVE']}capture.csv", 'a') as file_data:
+        #    writer = csv.DictWriter(file_data, self.fieldnames)
+        #    writer.writeheader()
         self.CapturingThread = Thread(target=self.Capturing)
         self.CapturingThread.daemon = True
 
@@ -95,20 +83,19 @@ class SharktikonCore():
             # })
 
     def Capturing(self):
-        while(1):
-            if not self.Status['PROCESS']:
-                print(f"Capturing for {self.IA['TIME']} seconds")
-                try:
-                    capture = pyshark.LiveCapture(
-                        interface='wlan0', display_filter='http')
-                    print(len(capture))
-                    capture.apply_on_packets(self.write_capture, timeout=5)
-                    capture.sniff(timeout=3)
-                    time.sleep(self.IA['TIME'])
-                except Exception as e:
-                    print(e)
-                self.Status['PROCESS'] = True
-                time.sleep(1)
+        while True:
+            print(f"Capturing for {self.IA['TIME']} seconds")
+            try:
+                capture = pyshark.LiveCapture(
+                    interface='wlan0', display_filter='http')
+                print(len(capture))
+                capture.apply_on_packets(self.write_capture, timeout=5)
+                capture.sniff(timeout=3)
+                time.sleep(self.IA['TIME'])
+            except Exception as e:
+                print(e)
+            time.sleep(0.1)
+
 
 if __name__ == "__main__":
     SharktikonCore().StartSharkticon()
