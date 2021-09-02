@@ -14,6 +14,7 @@ from matplotlib import style
 import time
 import tkinter as tk
 
+nb_packet_on_graph = 100
 # sharkticonCore = SharktikonCore()
 
 class MainWindow(tk.Tk):
@@ -67,7 +68,8 @@ def animate(i):
     xs = []
     ys = []
     i = 1
-    for line in lines:
+    print(app.action)
+    for line in lines[-100:]:
         if len(line) > 0:
             xs.append(float(i))
             ys.append(float(line))
