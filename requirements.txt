@@ -4,3 +4,5 @@ pathlib
 argparse
 pyshark
 subprocess
+pandas
+matplotlib
