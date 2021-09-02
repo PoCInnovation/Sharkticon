@@ -33,12 +33,14 @@ class GraphicPage(tk.Frame):
         self.__button_quit = Button(
             self, text="Quit", fg="red", font=font, command=self.quit)
         self.__log_label_good = Label(
-            self, text='Anomaly Detected', fg="red", font=font)
+            self, text='safe', fg="green", font=font)
         self._thread, self._stopTraining, self._stop = None, True, True
         self.sharkticonCore = SharktikonCore()
         self.bind("<<ShowFrame>>", self.display)
         self.sniffer = None
         self.training_path = "./Model/checkpoints/train"
+        self.anomalie = 1
+        self.__log_label_good.after(1000, self.change_label)
 
     def display(self, event) -> None:
         self.__canvas.draw()
@@ -60,6 +62,23 @@ class GraphicPage(tk.Frame):
             self._thread = Thread(target=self.run)
             self._thread.start()
         self.label["text"] = "Predicting ..."
+
+    def change_label(self):
+        graph_data = open('./data/samplefile.txt', 'r').read()
+        lines = graph_data.split('\n')
+        i = 1
+        my_list = []
+        for line in lines[-100:]:
+            if len(line) > 0:
+                if int(line) > 70:
+                    my_list.append(1)
+                else:
+                    my_list.append(0)
+        if my_list.count(1) * 2 > my_list.count(0):
+            self.__log_label_good.configure(text="Anomaly detected", fg="red")
+        else:
+            self.__log_label_good.configure(text="Safe", fg="green")
+        self.__log_label_good.after(1000, self.change_label)
 
     def run(self):
         while True:

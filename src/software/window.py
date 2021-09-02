@@ -68,7 +68,6 @@ def animate(i):
     xs = []
     ys = []
     i = 1
-    print(app.action)
     for line in lines[-100:]:
         if len(line) > 0:
             xs.append(float(i))
