@@ -6,13 +6,19 @@ import sys
 from threading import Thread
 from time import sleep
 from tkinter import Button, Label, Tk
-from src.software.Sniffer import SharktikonCore
+from src.software.Sniffer import sniff_packets
 from Model.Trainer import train
 from Model.Evaluate import predicate, getLastLine
+from src.Anomalie_detection import computeAnomalieScore
 
 
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
                                                NavigationToolbar2Tk)
+
+def proc_sniffer():
+    cmd = ['python', 'src/software/Sniffer.py']
+    proc = subprocess.Popen(cmd, stdout=sys.stderr.fileno(), stderr=sys.stderr.fileno())
+    return proc
 
 class GraphicPage(tk.Frame):
 
@@ -35,11 +41,11 @@ class GraphicPage(tk.Frame):
         self.__log_label_good = Label(
             self, text='safe', fg="green", font=font)
         self._thread, self._stopTraining, self._stop = None, True, True
-        self.sharkticonCore = SharktikonCore()
         self.bind("<<ShowFrame>>", self.display)
         self.sniffer = None
         self.training_path = "./Model/checkpoints/train"
         self.anomalie = 1
+        self.sniffer_stdout = proc_sniffer()
         self.__log_label_good.after(1000, self.change_label)
 
     def display(self, event) -> None:
@@ -54,9 +60,6 @@ class GraphicPage(tk.Frame):
         return
 
     def start(self):
-        if self.sniffer is None:
-            self.sniffer = Thread(target=self.sharkticonCore.Capturing)
-            self.sniffer.start()
         if self._thread is None:
             self._stop = False
             self._thread = Thread(target=self.run)
@@ -98,10 +101,17 @@ class GraphicPage(tk.Frame):
     def predict(self):
         self._stopTraining = True
         self.label["text"] = "Predicting..."
-        print(getLastLine('./data/capture.csv'))
-        prediction = predicate(self.training_path, "Execution/Dataset_test.csv", getLastLine('./data/capture.csv'))
-        prediction = prediction.numpy().decode("utf-8").split("[SEP]")
-        print(prediction)
+        try:
+            print(getLastLine('./data/capture.csv'))
+            prediction = predicate(self.training_path, "Execution/Dataset_test.csv", getLastLine('./data/capture.csv'))
+            prediction = prediction.numpy().decode("utf-8").split("[SEP]")
+            print(prediction)
+            with open('./data/samplefile.txt', 'a') as list_scores:
+                list_scores.writelines(computeAnomalieScore(prediction))
+        except Exception:
+            txt = self.sniffer_stdout.communicate()
+            if txt != b'':
+                print(txt)
         # TODO: anomaly_Detection
         # sleep(0.1)
 

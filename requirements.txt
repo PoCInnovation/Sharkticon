@@ -6,3 +6,5 @@ pyshark
 subprocess
 pandas
 matplotlib
+scapy
+colorama

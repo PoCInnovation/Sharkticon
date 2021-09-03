@@ -3,7 +3,6 @@ import tkinter.font as tkFont
 from tkinter import messagebox
 from PIL import ImageTk, Image
 from matplotlib.figure import Figure
-from src.software.Sniffer import SharktikonCore
 from src.software.Graphique import GraphicPage
 from src.software.startingPage import StartingPage
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
