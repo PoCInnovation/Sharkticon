@@ -102,7 +102,7 @@ class GraphicPage(tk.Frame):
         self._stopTraining = True
         self.label["text"] = "Predicting..."
         try:
-            new_packet = getLastLine('./data/capture.csv'))
+            new_packet = getLastLine('./data/capture.csv')
             if self.last_packet == new_packet:
                 return
             self.last_packet = new_packet
