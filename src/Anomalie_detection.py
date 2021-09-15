@@ -8,4 +8,4 @@ def computeAnomalieScore(reelPacket, predictPacket):
     anomalie = anomalie / len(reelPacket) * 100
     return anomalie
 
-computeAnomalieScore(['packet', 'GET', 'localhost'], ['paqet', 'GET', 'localo'])
+print(computeAnomalieScore(['packet', 'GET', 'localhost'], ['paqet', 'GET', 'localo']))

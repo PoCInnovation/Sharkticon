@@ -102,11 +102,15 @@ class GraphicPage(tk.Frame):
         self._stopTraining = True
         self.label["text"] = "Predicting..."
         try:
-            print(getLastLine('./data/capture.csv'))
+            new_packet = getLastLine('./data/capture.csv'))
+            if self.last_packet == new_packet:
+                return
+            self.last_packet = new_packet
             prediction = predicate(self.training_path, "Execution/Dataset_test.csv", getLastLine('./data/capture.csv'))
             prediction = prediction.numpy().decode("utf-8").split("[SEP]")
             print(prediction)
             with open('./data/samplefile.txt', 'a') as list_scores:
+                print()
                 list_scores.writelines(computeAnomalieScore(prediction))
         except Exception:
             txt = self.sniffer_stdout.communicate()
