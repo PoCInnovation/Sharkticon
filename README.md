@@ -88,5 +88,5 @@ Our software is divided into two main parts, training and analysis. Here is the 
 ------------
 ## Maintainers 🧑‍🤝‍🧑
 
- - [Mikaël Vallenet](https://github.com/Mikatech)
+ - [Mikaël Vallenet](https://github.com/MikaelVallenet)
  - [Evan Sabre](https://github.com/EvanSabre)
